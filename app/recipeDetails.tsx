@@ -64,12 +64,12 @@ const styles = StyleSheet.create({
     button: {
         margin: 30,
         padding: 12,
-        backgroundColor: 'rgba(81,56,32,0.9)',
+        backgroundColor: 'rgba(49,60,85,0.9)',
         borderRadius: 5,
         alignItems: 'center',
     },
     buttonText: {
-        color: 'white',
+        color: '#f3f3f3',
         fontSize: 16,
         fontWeight: 'bold',
     },

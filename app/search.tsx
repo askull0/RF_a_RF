@@ -57,7 +57,7 @@ const Search = () => {
             .then(data => {
                 router.push({
                     pathname: '/recipeList',
-                    params: { recipes: JSON.stringify(data.hits) }
+                    params: { recipes: JSON.stringify(data.hits), selectedItems  }
                 });
                 console.log("Recipes found:", data);
             })
@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
-        backgroundColor: 'rgba(81,56,32,0.9)',
+        // backgroundColor: 'rgba(81,56,32,0.9)',  //ciekawy braz
+        backgroundColor: 'rgba(49,60,85,0.9)',
     },
     overlay: {
         ...StyleSheet.absoluteFillObject,
