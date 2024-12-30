@@ -15,13 +15,12 @@ const CameraUse = ({
 
     const sendPhoto = async () => {
         try {
-            // Initialize FormData
             const formData = new FormData();
             formData.append("image", {
                 uri: photo.uri,
                 type: "image/jpg",
                 name: "photo.jpg"
-            } as any); // Use 'as any' to bypass TypeScript error
+            } as any);
 
             const response = await fetch('http://192.168.1.49:5000/detect', {
                 method: 'POST',
@@ -34,9 +33,7 @@ const CameraUse = ({
 
             const data = await response.json();
             console.log(data.predictions);
-            console.log("to jest modelu ");
-            onDetectedObjects(data.predictions); // Send detected objects to parent
-            //Alert.alert("Detected Objects", JSON.stringify(data.predictions));
+            onDetectedObjects(data.predictions); // objects to parent
 
         } catch (error) {
             console.error("Error sending photo:", error);

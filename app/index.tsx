@@ -13,7 +13,7 @@ export default function Index() {
         <StatusBar style="light" backgroundColor="transparent" translucent />
         <ImageBackground source={backgroundImage} style={styles.background}>
             <View style={styles.container}>
-                <Text style={styles.welcomeText}>Welcome to the RFaRF app!!</Text>
+                <Text style={styles.welcomeText}>Welcome to the application!!</Text>
                 <Text style={styles.middleText}>You can find recipes by taking a photo of the ingredients or simply by searching manually.</Text>
 
                 <View style={styles.buttonContainer}>
