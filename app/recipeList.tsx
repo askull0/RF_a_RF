@@ -73,13 +73,13 @@ const RecipeList = () => {
     });
     const [activeFiltersCount, setActiveFiltersCount] = useState(0);
     const [recipesData, setRecipesData] = useState<any[]>([]);
-    const [expandedFilter, setExpandedFilter] = useState<string | null>(null);  // To track which filter is expanded
+    const [expandedFilter, setExpandedFilter] = useState<string | null>(null);
 
     const itemsArray = Array.isArray(selectedItems) ? selectedItems : [selectedItems];
 
     useEffect(() => {
         const queryUrl = generateQueryUrl(selectedFilters, itemsArray);
-        console.log("Generated Query URL:", queryUrl); // Log generated query URL
+        console.log("Generated Query URL:", queryUrl);
 
         fetch(queryUrl)
             .then((response) => response.json())
@@ -106,7 +106,7 @@ const RecipeList = () => {
     };
 
     const toggleFilterExpansion = (filter: string) => {
-        setExpandedFilter((prev) => (prev === filter ? null : filter)); // Toggle filter expansion
+        setExpandedFilter((prev) => (prev === filter ? null : filter));
     };
 
     const filters: { type: FilterType; options: string[]; label: string }[] = [

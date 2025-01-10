@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginHorizontal: 20,
         position: 'absolute',
-        top: '26%',  //środek ekranu
+        top: '26%',
         color: '#FFFFFF',
     },
     buttonContainer: {
@@ -74,9 +74,6 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         height: '45%',
         justifyContent: 'center',
-        // borderColor: 'white',
-        // borderStyle: 'solid',
-        // borderWidth: 1.5,
     },
     buttonText: {
         color: 'white',

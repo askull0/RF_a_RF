@@ -1,11 +1,11 @@
 import React from 'react';
-import {View, Text, Image, ScrollView, StyleSheet, Linking, TouchableOpacity} from 'react-native';
+import { Text, Image, ScrollView, StyleSheet, Linking, TouchableOpacity} from 'react-native';
 import { useLocalSearchParams } from 'expo-router';
 
 const RecipeDetail = () => {
     const { recipe } = useLocalSearchParams();
     const recipeData = recipe && typeof recipe === 'string' ? JSON.parse(recipe) : {};
-    const { label, calories, yield: servings, url, totalNutrients } = recipeData;
+    const { yield: servings, url, totalNutrients } = recipeData;
 
     return (
         <ScrollView style={styles.container}>

@@ -83,6 +83,7 @@ const Search = () => {
                 {/* Search Input with Overlay Effect */}
                 <View style={styles.searchInputContainer}>
                     <TextInput
+                        testID="search-input"
                         style={[styles.searchInput, loading && { opacity: 0.5 }]}
                         placeholder="Search ingredients ..."
                         placeholderTextColor="white"
@@ -121,7 +122,7 @@ const Search = () => {
                         selectedItems.map((item, index) => (
                             <View key={index} style={styles.selectedItemContainer}>
                                 <Text style={styles.selectedItem}>{item}</Text>
-                                <TouchableOpacity onPress={() => handleRemoveItem(item)}>
+                                <TouchableOpacity onPress={() => handleRemoveItem(item)}  testID={`delete-button-${index}`}>
                                     <AntDesign name='delete' size={20} color={'white'} />
                                 </TouchableOpacity>
                             </View>
@@ -155,7 +156,7 @@ const styles = StyleSheet.create({
     },
     searchInputContainer: {
         position: 'relative',
-        zIndex: 20, // Ensure it overlays other elements
+        zIndex: 20,
         marginBottom: 10,
     },
     searchInput: {

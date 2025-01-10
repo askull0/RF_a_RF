@@ -1,5 +1,6 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import {useRef, useState} from 'react';
+import React, { forwardRef } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {AntDesign} from "@expo/vector-icons";
 import CameraUse from "@/components/CameraUse";
@@ -51,7 +52,7 @@ export default function camera() {
     return (
         <View style={styles.container}>
 
-            <CameraView style={styles.camera} ref={cameraRef} facing={"back"} mode={"picture"} ratio={'1:1'}>
+            <CameraView style={styles.camera} ref={cameraRef} facing={"back"} mode={"picture"} ratio={'1:1'} testID="camera-view">
             </CameraView>
 
             <View style={styles.buttonContainer}>
@@ -92,4 +93,3 @@ const styles = StyleSheet.create({
         margin: 20,
     },
 });
-

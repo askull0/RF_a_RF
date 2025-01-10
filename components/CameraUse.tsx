@@ -43,17 +43,17 @@ const CameraUse = ({
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.box}>
+            <View style={styles.box} testID="photo-image">
                 <Image
                     style={styles.previewContainer}
                     source={{ uri: 'data:image/jpg;base64,' + photo.base64 }} />
             </View>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity style={styles.button} onPress={handleRetakePhoto}>
+                <TouchableOpacity style={styles.button} onPress={handleRetakePhoto} testID="retake-button">
                     <Fontisto name='redo' size={36} color='black' />
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={sendPhoto}>
+                <TouchableOpacity style={styles.button} onPress={sendPhoto} testID="send-photo-button">
                     <Fontisto name='check' size={36} color='black' />
                 </TouchableOpacity>
             </View>

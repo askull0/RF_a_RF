@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessibilityIgnoresInvertColors={true}
+  style={
+    {
+      "flex": 1,
+      "resizeMode": "cover",
+    }
+  }
+>
+  <Image
+    source={
+      {
+        "testUri": "../../../assets/images/tlo01.png",
+      }
+    }
+    style={
+      [
+        {
+          "bottom": 0,
+          "left": 0,
+          "position": "absolute",
+          "right": 0,
+          "top": 0,
+        },
+        {
+          "height": undefined,
+          "width": undefined,
+        },
+        undefined,
+      ]
+    }
+  />
+  <View
+    style={
+      {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+        "margin": 0,
+      }
+    }
+  >
+    <Text
+      style={
+        {
+          "color": "#FFFFFF",
+          "fontSize": 26,
+          "fontWeight": "bold",
+          "position": "absolute",
+          "textAlign": "center",
+          "top": 60,
+        }
+      }
+    >
+      Welcome to the application!!
+    </Text>
+    <Text
+      style={
+        {
+          "color": "#FFFFFF",
+          "fontSize": 25,
+          "fontWeight": "bold",
+          "marginHorizontal": 20,
+          "position": "absolute",
+          "textAlign": "center",
+          "top": "26%",
+        }
+      }
+    >
+      You can find recipes by taking a photo of the ingredients or simply by searching manually.
+    </Text>
+    <View
+      style={
+        {
+          "bottom": 0,
+          "height": "40%",
+          "justifyContent": "space-evenly",
+          "marginBottom": 10,
+          "position": "absolute",
+          "width": "96%",
+        }
+      }
+    >
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "rgba(49,60,85,0.9)",
+            "borderRadius": 5,
+            "height": "45%",
+            "justifyContent": "center",
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "white",
+              "fontSize": 30,
+              "fontWeight": "bold",
+              "textAlign": "center",
+            }
+          }
+        >
+          Take a Photo
+        </Text>
+      </View>
+      <View
+        accessibilityState={
+          {
+            "busy": undefined,
+            "checked": undefined,
+            "disabled": undefined,
+            "expanded": undefined,
+            "selected": undefined,
+          }
+        }
+        accessibilityValue={
+          {
+            "max": undefined,
+            "min": undefined,
+            "now": undefined,
+            "text": undefined,
+          }
+        }
+        accessible={true}
+        collapsable={false}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          {
+            "backgroundColor": "rgba(49,60,85,0.9)",
+            "borderRadius": 5,
+            "height": "45%",
+            "justifyContent": "center",
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            {
+              "color": "white",
+              "fontSize": 30,
+              "fontWeight": "bold",
+              "textAlign": "center",
+            }
+          }
+        >
+          Search Recipes
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
