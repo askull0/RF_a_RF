@@ -131,6 +131,7 @@ exports[`renders correctly 1`] = `
               "textAlign": "center",
             }
           }
+          testID="button-take-photo"
         >
           Take a Photo
         </Text>
@@ -182,6 +183,7 @@ exports[`renders correctly 1`] = `
               "textAlign": "center",
             }
           }
+          testID="button-search-recipes"
         >
           Search Recipes
         </Text>

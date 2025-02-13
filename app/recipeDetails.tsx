@@ -5,7 +5,10 @@ import { useLocalSearchParams } from 'expo-router';
 const RecipeDetail = () => {
     const { recipe } = useLocalSearchParams();
     const recipeData = recipe && typeof recipe === 'string' ? JSON.parse(recipe) : {};
-    const { yield: servings, url, totalNutrients } = recipeData;
+
+    const servings = recipeData.yield;
+    const url = recipeData.url;
+    const totalNutrients = recipeData.totalNutrients;
 
     return (
         <ScrollView style={styles.container}>
@@ -14,14 +17,12 @@ const RecipeDetail = () => {
             )}
             <Text style={styles.title}>{recipeData.label || 'No Title Available'}</Text>
 
-            {recipeData.totalTime ? (
-                <Text style={styles.subtitle}>Total Time: {recipeData.totalTime} min</Text>
-            ) : (
-                <Text style={styles.subtitle}>Total Time: --</Text>
-            )}
+            <Text style={styles.subtitle}>
+                Total Time: {recipeData.totalTime ? recipeData.totalTime + ' min' : '--'}
+            </Text>
 
             <Text style={styles.subtitle}>
-                Calories: {recipeData.calories ? Math.round(recipeData.calories) : 'N/A'}
+                Calories: {recipeData.calories ? Math.round(recipeData.calories) : '--'}
             </Text>
 
             <Text style={styles.info}>Servings: {servings}</Text>
@@ -31,13 +32,14 @@ const RecipeDetail = () => {
 
 
             <Text style={styles.subtitle}>Ingredients:</Text>
-            {recipeData.ingredientLines && recipeData.ingredientLines.length > 0 ? (
+            {
+                recipeData.ingredientLines && recipeData.ingredientLines.length > 0 ? (
                 recipeData.ingredientLines.map((ingredient: string, index: number) => (
                     <Text key={index} style={styles.ingredient}>{ingredient}</Text>
                 ))
-            ) : (
-                <Text style={styles.ingredient}>No ingredients available.</Text>
-            )}
+            ) :
+                    (<Text style={styles.ingredient}>No ingredients available.</Text>)
+            }
 
             <TouchableOpacity
                 style={styles.button}

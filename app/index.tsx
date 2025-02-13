@@ -10,7 +10,7 @@ export default function Index() {
 
     return (
         <>
-        <StatusBar style="light" backgroundColor="transparent" translucent />
+        <StatusBar style="light" backgroundColor="transparent" translucent={true} />
         <ImageBackground source={backgroundImage} style={styles.background}>
             <View style={styles.container}>
                 <Text style={styles.welcomeText}>Welcome to the application!!</Text>
@@ -18,11 +18,11 @@ export default function Index() {
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style={styles.button} onPress={() => router.push('/camera')}>
-                        <Text style={styles.buttonText}>Take a Photo</Text>
+                        <Text testID="button-take-photo" style={styles.buttonText}>Take a Photo</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.button} onPress={() => router.push('/search')}>
-                        <Text style={styles.buttonText}>Search Recipes</Text>
+                        <Text testID="button-search-recipes" style={styles.buttonText}>Search Recipes</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -34,7 +34,7 @@ export default function Index() {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        resizeMode: 'cover',  // cover entire screnn
+        resizeMode: 'cover',
     },
     container: {
         flex: 1,

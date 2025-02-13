@@ -1,7 +1,7 @@
 import * as React from 'react';
 import renderer from 'react-test-renderer';
 import Index from '../';
-import {render} from "@testing-library/react-native";
+import {render, screen} from "@testing-library/react-native";
 
 
 it('renders correctly', () => {
@@ -9,12 +9,12 @@ it('renders correctly', () => {
     expect(tree).toMatchSnapshot();
 });
 
-test('renders welcome text', () => {
-    const { getByText } = render(<Index />);
-    expect(getByText('Welcome to the application!!')).toBeTruthy();
+it('renders welcome text', () => {
+    render(<Index />);
+    expect(screen.getByText('Welcome to the application!!')).toBeTruthy();
 });
 
-test('renders middle text', () => {
-    const { getByText } = render(<Index />);
-    expect(getByText('You can find recipes by taking a photo of the ingredients or simply by searching manually.')).toBeTruthy();
+it('renders middle text', () => {
+    render(<Index />);
+    expect(screen.getByText('You can find recipes by taking a photo of the ingredients or simply by searching manually.')).toBeTruthy();
 });

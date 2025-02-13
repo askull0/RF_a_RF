@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-    View,
-    Text,
-    ScrollView,
-    TouchableOpacity,
-    StyleSheet,
-    Modal,
-    FlatList,
-    Button,
-    Image,
-} from 'react-native';
+import {View, Text, ScrollView, TouchableOpacity, StyleSheet, Modal, FlatList, Button, Image} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 
 type Filters = {
@@ -33,28 +23,23 @@ const formatTime = (time: string) => {
 
 const generateQueryUrl = (selectedFilters: Filters, ingredients: string[]) => {
     const baseUrl = "https://api.edamam.com/api/recipes/v2";
-    const appId = "cf40f564";
-    const appKey = "a5917b6cb5b891bded4921ab153291a2";
+    // substitute key
+    const appId = "key_id";
+    const appKey = "key_app";
 
-    const params = new URLSearchParams({
-        app_id: appId,
-        app_key: appKey,
-        type: "public",
-        q: ingredients.join(", "),
-    });
+    let queryString = `app_id=${appId}&app_key=${appKey}&type=public&q=${ingredients.join(", ")}`;
 
     if (selectedFilters.time) {
-        const formattedTime = formatTime(selectedFilters.time);
-        params.append("time", formattedTime);
+        queryString += `&time=${formatTime(selectedFilters.time)}`;
     }
 
     Object.entries(selectedFilters).forEach(([key, value]) => {
         if (key !== 'time' && value) {
-            params.append(key, value);
+            queryString += `&${key}=${value}`;
         }
     });
 
-    return `${baseUrl}?${params.toString()}`;
+    return `${baseUrl}?${queryString}`;
 };
 
 const RecipeList = () => {
@@ -97,16 +82,16 @@ const RecipeList = () => {
     }, [selectedFilters, selectedItems]);
 
     const handleFilterChange = (filterType: FilterType, value: string) => {
-        setSelectedFilters((prev) => {
-            const updated = { ...prev, [filterType]: value };
-            const count = Object.values(updated).filter((v) => v !== '').length;
-            setActiveFiltersCount(count);
-            return updated;
-        });
+        const updatedFilters = { ...selectedFilters, [filterType]: value };
+        const activeFilterCount = Object.values(updatedFilters).filter((v) => v !== '').length;
+
+        setActiveFiltersCount(activeFilterCount);
+        setSelectedFilters(updatedFilters);
     };
 
-    const toggleFilterExpansion = (filter: string) => {
-        setExpandedFilter((prev) => (prev === filter ? null : filter));
+    const expandCollapseFilter = (filter: string) => {
+        const newExpandedFilter = expandedFilter === filter ? null : filter;
+        setExpandedFilter(newExpandedFilter);
     };
 
     const filters: { type: FilterType; options: string[]; label: string }[] = [
@@ -189,7 +174,7 @@ const RecipeList = () => {
                         renderItem={({ item }) => (
                             <View style={styles.filterGroup}>
                                 <TouchableOpacity
-                                    onPress={() => toggleFilterExpansion(item.label)}
+                                    onPress={() => expandCollapseFilter(item.label)}
                                     style={styles.filterLabel}
                                 >
                                     <Text style={styles.filterLabelText}>{item.label}</Text>
@@ -215,10 +200,9 @@ const RecipeList = () => {
                             </View>
                         )}
                     />
-                    <Button
-                        title="Apply Filters"
-                        onPress={() => setFiltersModalVisible(false)}
-                    />
+                    <TouchableOpacity  testID="button-apply-filters" onPress={() => setFiltersModalVisible(false)}>
+                        <Text>Apply Filters</Text>
+                    </TouchableOpacity>
                 </View>
             </Modal>
         </View>

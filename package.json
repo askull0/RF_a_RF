@@ -44,7 +44,6 @@
     "react-native-webview": "13.12.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.3.1",

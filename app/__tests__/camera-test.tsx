@@ -1,50 +1,47 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import Camera from '../camera';
-import { useCameraPermissions } from 'expo-camera';
-import { router } from 'expo-router';
+import {useRouter} from "expo-router";
 
 jest.mock('expo-camera', () => ({
-    CameraView: jest.fn().mockImplementation(({ children }) => <>{children}</>),
+    CameraView: 'CameraView',
     useCameraPermissions: jest.fn(),
 }));
 
 jest.mock('expo-router', () => ({
-    router: {
-        push: jest.fn(),
-    },
+    useRouter: jest.fn(),
 }));
 
-describe('Camera Component', () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
+describe('Camera ', () => {
+
+    it('shows blank screen during loading permissions', () => {
+        const { useCameraPermissions } = require('expo-camera');
+        useCameraPermissions.mockReturnValue([null]);
+
+        render(<Camera />);
+        expect(screen.toJSON()).toMatchSnapshot();
     });
 
-    it('wyświetla pusty ekran podczas ładowania uprawnień', () => {
-        (useCameraPermissions as jest.Mock).mockReturnValue([null, jest.fn()]);
-        const { toJSON } = render(<Camera />);
-        expect(toJSON()).toMatchSnapshot();
-    });
-
-    it('wyświetla komunikat o braku uprawnień i przycisk ich żądania', () => {
+    it('display message about the lack of permissions and a button to request them', () => {
         const mockRequestPermission = jest.fn();
-        (useCameraPermissions as jest.Mock).mockReturnValue([
-            { granted: false },
-            mockRequestPermission,
-        ]);
+        const { useCameraPermissions } = require('expo-camera');
+        useCameraPermissions.mockReturnValue([{ granted: false }, mockRequestPermission,]);
 
-        const { getByText } = render(<Camera />);
-        expect(getByText('We need your permission to show the camera')).toBeTruthy();
-        const grantButton = getByText('grant permission');
-        fireEvent.press(grantButton);
+        render(<Camera />);
+        expect(screen.getByText('We need your permission to show the camera')).toBeTruthy();
+
+        fireEvent.press(screen.getByText('grant permission'));
         expect(mockRequestPermission).toHaveBeenCalled();
     });
 });
 
 describe('handleAddDetectedItems', () => {
-    it('should call router.push with correct parameters', () => {
+    it('should push to search with correct parameters', () => {
         const mockItems = ['item1', 'item2'];
-        const spyRouterPush = jest.spyOn(router, 'push');
+        const mockPush = jest.fn();
+        const { useRouter } = require('expo-router');
+        useRouter.mockReturnValue({ push: mockPush });
+        const router = useRouter();
 
         const handleAddDetectedItems = (items: string[]) => {
             router.push({
@@ -54,57 +51,50 @@ describe('handleAddDetectedItems', () => {
         };
         handleAddDetectedItems(mockItems);
 
-        expect(spyRouterPush).toHaveBeenCalledWith({
+        expect(mockPush).toHaveBeenCalledWith({
             pathname: '/search',
             params: { detectedItems: mockItems },
         });
     });
 });
 
-describe('handleRetakePhoto', () => {
-    it('should reset the photo state', () => {
-        let photo = { uri: 'some-uri' };
-        const setPhoto = jest.fn((newPhoto) => (photo = newPhoto));
+describe('handleResetPicture', () => {
+    it('should reset the picture state', () => {
+        let picture = { uri: 'some-uri' };
+        const setPicture = jest.fn((newPicture) => (picture = newPicture));
 
-        const handleRetakePhoto = () => setPhoto(null);
+        const handleResetPicture = () => setPicture(null);
 
-        handleRetakePhoto();
+        handleResetPicture();
 
-        expect(setPhoto).toHaveBeenCalledWith(null);
-        expect(photo).toBe(null);
+        expect(setPicture).toHaveBeenCalledWith(null);
+        expect(picture).toBe(null);
     });
 });
 
-describe('handleTakePhoto', () => {
-    it('should call takePictureAsync and update photo state', async () => {
+describe('handleCapturePicture', () => {
+    it('should call takePictureAsync and update picture state', async () => {
         const mockCameraRef = {
             current: {
                 takePictureAsync: jest.fn().mockResolvedValue({
-                    uri: 'file://path/to/photo.jpg',
-                    base64: 'base64string',
+                    uri: 'file://picture.jpg',
                 }),
             },
         };
-        let photo = null;
-        const setPhoto = jest.fn((newPhoto) => (photo = newPhoto));
+        let picture = null;
+        const setPicture = jest.fn((newPicture) => (picture = newPicture));
 
-        const handleTakePhoto = async () => {
+        const handleCapturePicture = async () => {
             if (mockCameraRef.current) {
-                const takedPhoto = await mockCameraRef.current.takePictureAsync();
-                setPhoto(takedPhoto);
+                const takedPicture = await mockCameraRef.current.takePictureAsync();
+                setPicture(takedPicture);
             }
         };
-        await handleTakePhoto();
+        await handleCapturePicture();
 
         expect(mockCameraRef.current.takePictureAsync).toHaveBeenCalled();
-        expect(setPhoto).toHaveBeenCalledWith({
-            uri: 'file://path/to/photo.jpg',
-            base64: 'base64string',
-        });
-        expect(photo).toEqual({
-            uri: 'file://path/to/photo.jpg',
-            base64: 'base64string',
-        });
+        expect(setPicture).toHaveBeenCalledWith({uri: 'file://picture.jpg',});
+        expect(picture).toEqual({uri: 'file://picture.jpg',});
     });
 });
 

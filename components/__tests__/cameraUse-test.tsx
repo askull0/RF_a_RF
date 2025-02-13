@@ -1,80 +1,74 @@
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import {render, fireEvent, waitFor, screen} from '@testing-library/react-native';
 import CameraUse from '../CameraUse';
 
 jest.mock('@expo/vector-icons', () => ({
-    Fontisto: 'Fontisto',
     AntDesign: 'AntDesign',
+    MaterialCommunityIcons: 'MaterialCommunityIcons',
+    Entypo: 'Entypo',
 }));
 
-global.fetch = jest.fn(() =>
-    Promise.resolve({
-        ok: true,
-        json: () => Promise.resolve({ predictions: ['object1', 'object2'] }),
-    })
-) as jest.Mock;
+global.fetch = jest.fn().mockResolvedValue({
+    ok: true,
+    json: function() {
+        return Promise.resolve({ predictions: ['object1', 'object2'] });
+    }
+});
 
 describe('CameraUse Component', () => {
-    it('should display the photo when passed as prop', () => {
-        const mockPhoto = {
-            base64: 'base64image',
-            uri: 'file://path/to/photo.jpg',
+    it('should display the picture when passed as prop', () => {
+        const mockPicture = {
+            uri: 'file://picture.jpg',
             width: 100,
             height: 100,
         };
 
-        const { getByTestId } = render(
+        render(
             <CameraUse
-                photo={mockPhoto}
-                handleRetakePhoto={jest.fn()}
+                picture={mockPicture}
+                handleResetPicture={jest.fn()}
                 onDetectedObjects={jest.fn()}
             />
         );
 
-        const image = getByTestId('photo-image');
-        expect(image).toBeTruthy();
+        expect(screen.getByTestId('picture-image')).toBeTruthy();
     });
 
-    it('should call handleRetakePhoto when retake button is pressed', () => {
-        const mockHandleRetakePhoto = jest.fn();
-        const mockPhoto = {
-            base64: 'base64image',
-            uri: 'file://path/to/photo.jpg',
+    it('should call handleRetakePicture when retake button is pressed', () => {
+        const mockHandleResetPicture = jest.fn();
+        const mockPicture = {
+            uri: 'file://picture.jpg',
             width: 100,
             height: 100,
         };
 
-        const { getByTestId } = render(
+         render(
             <CameraUse
-                photo={mockPhoto}
-                handleRetakePhoto={mockHandleRetakePhoto}
+                picture={mockPicture}
+                handleResetPicture={mockHandleResetPicture}
                 onDetectedObjects={jest.fn()}
             />
         );
-
-        const retakeButton = getByTestId('retake-button');
-        fireEvent.press(retakeButton);
-        expect(mockHandleRetakePhoto).toHaveBeenCalled();
+        fireEvent.press(screen.getByTestId('retake-button'));
+        expect(mockHandleResetPicture).toHaveBeenCalled();
     });
 
-    it('should call sendPhoto and send the image when send button is pressed', async () => {
-        const mockPhoto = {
-            base64: 'base64image',
-            uri: 'file://path/to/photo.jpg',
+    it('should call sendPicture and send the image when send button is pressed', async () => {
+        const mockPicture = {
+            uri: 'file://picture.jpg',
             width: 100,
             height: 100,
         };
-
         const mockOnDetectedObjects = jest.fn();
-        const { getByTestId } = render(
+
+        render(
             <CameraUse
-                photo={mockPhoto}
-                handleRetakePhoto={jest.fn()}
+                picture={mockPicture}
+                handleResetPicture={jest.fn()}
                 onDetectedObjects={mockOnDetectedObjects}
             />
         );
 
-        const sendButton = getByTestId('send-photo-button');
-        fireEvent.press(sendButton);
+        fireEvent.press(screen.getByTestId('send-picture-button'));
 
         await waitFor(() => {
             expect(global.fetch).toHaveBeenCalledTimes(1);

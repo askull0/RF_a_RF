@@ -1,36 +1,33 @@
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 import Index from '../';
 
 jest.mock('expo-router', () => ({
     useRouter: jest.fn(),
 }));
 
-describe('Index Component button Take a Photo', () => {
-    it('navigates correctly on button: Take a Photo', () => {
+describe('Button Take a Photo', () => {
+    it('navigates correctly on button: Take a Photo to camera', () => {
         const mockPush = jest.fn();
         const { useRouter } = require('expo-router');
         useRouter.mockReturnValue({ push: mockPush });
 
-        const { getByText } = render(<Index />);
-        const takePhotoButton = getByText('Take a Photo');
+        render(<Index />);
 
-        fireEvent.press(takePhotoButton);
+        fireEvent.press(screen.getByTestId('button-take-photo'));
         expect(mockPush).toHaveBeenCalledWith('/camera');
     });
 });
 
-describe('Index Component Search Recipes', () => {
-    it('navigates correctly on button: Search Recipes', () => {
+describe('Button Search Recipes', () => {
+    it('navigates correctly on button: Search Recipes to search', () => {
         const mockPush = jest.fn();
         const { useRouter } = require('expo-router');
         useRouter.mockReturnValue({ push: mockPush });
 
-        const { getByText } = render(<Index />);
+        render(<Index />);
 
-        const takePhotoButton = getByText('Search Recipes');
-        fireEvent.press(takePhotoButton);
-
+        fireEvent.press(screen.getByTestId('button-search-recipes'));
         expect(mockPush).toHaveBeenCalledWith('/search');
     });
 });

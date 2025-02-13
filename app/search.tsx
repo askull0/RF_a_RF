@@ -6,7 +6,6 @@ import suggestions from './suggestions';
 import { AntDesign } from "@expo/vector-icons";
 import {useRoute} from "@react-navigation/core";
 
-
 const Search = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
@@ -39,7 +38,10 @@ const Search = () => {
     };
 
     const handleRemoveItem = (item: string) => {
-        setSelectedItems(selectedItems.filter(selectedItem => selectedItem !== item));
+        const updatedItems = selectedItems.filter((selectedItem) => {
+            return selectedItem !== item;
+        });
+        setSelectedItems(updatedItems);
     };
 
     const handleFindRecipes = () => {
@@ -52,7 +54,7 @@ const Search = () => {
 
         // connect api
         const query = selectedItems.join(',');
-        fetch(`https://api.edamam.com/api/recipes/v2?app_id=cf40f564&app_key=a5917b6cb5b891bded4921ab153291a2&type=public&q=${query}`)
+        fetch(`https://api.edamam.com/api/recipes/v2?app_id=key_id&app_key=key_app&type=public&q=${query}`) // substitute key
             .then(response => response.json())
             .then(data => {
                 router.push({
@@ -80,7 +82,7 @@ const Search = () => {
                     </View>
                 )}
 
-                {/* Search Input with Overlay Effect */}
+                {/*Overlay Effect */}
                 <View style={styles.searchInputContainer}>
                     <TextInput
                         testID="search-input"

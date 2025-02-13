@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react-native';
 import Search from '../search';
 import { useRouter } from 'expo-router';
 import { useRoute } from '@react-navigation/core';
@@ -19,56 +19,55 @@ jest.mock('@expo/vector-icons', () => ({
 }));
 
 jest.mock('expo-router', () => ({useRouter: jest.fn(),}));
-const { queryByText } = render(<Search />);
 jest.mock('expo-camera', () => ({ Camera: 'Camera' }));
 
 describe('Search component', () => {
-    it('should add items to selectedItems when typing and selecting a suggestion', () => {
+    it('should add items to selectedItems when typing and delete one', () => {
         const mockPush = jest.fn();
-        (useRouter as jest.Mock).mockReturnValue({
-            push: mockPush,
-        });
+        const { useRouter } = require('expo-router');
+        useRouter.mockReturnValue({ push: mockPush });
 
-        (useRoute as jest.Mock).mockReturnValue({
+        const { useRoute } = require('@react-navigation/core');
+        useRoute.mockReturnValue({
             params: {
                 detectedItems: 'apple, banana',
             },
         });
 
-        const { getByPlaceholderText, getByText, getByTestId } = render(<Search />);
+        render(<Search />);
 
-        fireEvent.changeText(getByPlaceholderText('Search ingredients ...'), 'carrot');
-        fireEvent.press(getByText('carrot'));
+        fireEvent.changeText(screen.getByPlaceholderText('Search ingredients ...'), 'carrot');
+        fireEvent.press(screen.getByText('carrot'));
 
-        expect(getByText('carrot')).toBeTruthy();
+        expect(screen.getByText('carrot')).toBeTruthy();
 
-        fireEvent.press(getByTestId('delete-button-0'));
-        expect(queryByText('carrot')).toBeNull();
+        fireEvent.press(screen.getByTestId('delete-button-2'));
+        expect(screen.queryByText('carrot')).toBeNull();
     });
 
 });
 
 describe('Search integration test', () => {
-    it('should add items, display them, and navigate after finding recipes', async () => {
+    it('should add items, display them, and navigate to list of recipes', async () => {
         const mockPush = jest.fn();
-        (useRouter as jest.Mock).mockReturnValue({ push: mockPush });
+        const { useRouter } = require('expo-router');
+        useRouter.mockReturnValue({ push: mockPush });
 
-        const { getByPlaceholderText, getByText, getByTestId, queryByText } = render(<Search />);
-        const searchInput = getByPlaceholderText('Search ingredients ...');
+        render(<Search />);
 
         const addIngredient = (ingredient: string) => {
-            fireEvent.changeText(searchInput, ingredient);
-            fireEvent.press(getByText(ingredient));
-            expect(getByText(ingredient)).toBeTruthy();
+            fireEvent.changeText(screen.getByPlaceholderText('Search ingredients ...'), ingredient);
+            fireEvent.press(screen.getByText(ingredient));
+            expect(screen.getByText(ingredient)).toBeTruthy();
         };
 
         addIngredient('carrot');
-        fireEvent.press(getByTestId('delete-button-2'));
-        expect(queryByText('carrot')).toBeNull();
+        fireEvent.press(screen.getByTestId('delete-button-2'));
+        expect(screen.queryByText('carrot')).toBeNull();
 
         addIngredient('onion');
 
-        fireEvent.press(getByText('Find Recipes'));
+        fireEvent.press(screen.getByText('Find Recipes'));
         await waitFor(() => {
             expect(mockPush).toHaveBeenCalledWith({
                 pathname: '/recipeList',
@@ -79,3 +78,4 @@ describe('Search integration test', () => {
         });
     });
 });
+

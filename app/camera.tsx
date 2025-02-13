@@ -1,15 +1,16 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import {useRef, useState} from 'react';
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {AntDesign} from "@expo/vector-icons";
 import CameraUse from "@/components/CameraUse";
-import {router} from "expo-router";
+import {useRouter} from "expo-router";
 
 export default function camera() {
     const [permission, requestPermission] = useCameraPermissions();
-    const [photo, setPhoto] = useState<any>(null);
+    const [picture, setPicture] = useState<any>(null);
     const cameraRef = useRef<CameraView | null>(null);
+    const router = useRouter();
 
     if (!permission) {
         // Camera permissions are still loading.
@@ -25,20 +26,13 @@ export default function camera() {
         );
     }
 
-    const handleTakePhoto = async () => {
-        if(cameraRef.current) {
-            const options = {
-                quality: 1,
-                base64: true,
-                exif: false,
-            };
-            const takedPhoto = await cameraRef.current.takePictureAsync(options);
-
-            setPhoto(takedPhoto);
+    const handleCapturePicture = async () => {
+        if (cameraRef.current) {
+            setPicture(await cameraRef.current.takePictureAsync());
         }
     };
 
-    const handleRetakePhoto = () => setPhoto(null);
+    const handleResetPicture = () => setPicture(null);
 
     const handleAddDetectedItems = (items: string[]) => {
         router.push({
@@ -47,7 +41,7 @@ export default function camera() {
         });
     };
 
-    if(photo) return <CameraUse photo={photo} handleRetakePhoto={handleRetakePhoto} onDetectedObjects={handleAddDetectedItems} />
+    if(picture) return <CameraUse picture={picture} handleResetPicture={handleResetPicture} onDetectedObjects={handleAddDetectedItems} />
 
     return (
         <View style={styles.container}>
@@ -56,7 +50,7 @@ export default function camera() {
             </CameraView>
 
             <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={handleTakePhoto} >
+                <TouchableOpacity onPress={handleCapturePicture} >
                     <AntDesign name='camera' size={60} color={'black'} />
                 </TouchableOpacity>
             </View>
@@ -74,7 +68,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10,
         fontSize: 25,
-        //paddingBottom: 10,
     },
     container: {
         flex: 1,
